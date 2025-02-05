@@ -61,11 +61,11 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@types/got": "^9.6.11",
+    "@types/got": "^9.6.12",
     "@types/jest": "^27.5.1",
     "@types/node": "^22.13.1",
-    "@types/sharp": "^0.29.4",
-    "@types/ws": "^8.0.0",
+    "@types/sharp": "^0.29.5",
+    "@types/ws": "^8.5.14",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.57.1",
     "jest": "^27.0.6",

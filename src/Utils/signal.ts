@@ -1,4 +1,3 @@
-import { chunk } from 'lodash'
 import { KEY_BUNDLE_TYPE } from '../Defaults'
 import { SignalRepository } from '../Types'
 import { AuthenticationCreds, AuthenticationState, KeyPair, SignalIdentity, SignalKeyStore, SignedKeyPair } from '../Types/Auth'
@@ -78,6 +77,13 @@ export const parseAndInjectE2ESessions = async(
 			signature: getBinaryNodeChildBuffer(key, 'signature')!,
 		}) : undefined
 	)
+	const chunkArray = (array, chunkSize) => (
+		const chunks = [];
+		for (let i = 0; i < array.length; i += chunkSize) {
+			chunks.push(array.slice(i, i + chunkSize));
+		}
+  		return chunks;
+	)
 	const nodes = getBinaryNodeChildren(getBinaryNodeChild(node, 'list'), 'user')
 	for(const node of nodes) {
 		assertNodeErrorFree(node)
@@ -89,7 +95,7 @@ export const parseAndInjectE2ESessions = async(
 	// This way we chunk it in smaller parts and between those parts we can yield to the event loop
 	// It's rare case when you need to E2E sessions for so many users, but it's possible
 	const chunkSize = 100
-	const chunks = chunk(nodes, chunkSize)
+	const chunks = chunkArray(nodes, chunkSize)
 	for(const nodesChunk of chunks) {
 		await Promise.all(
 			nodesChunk.map(
